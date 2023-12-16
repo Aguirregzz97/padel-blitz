@@ -80,7 +80,13 @@ export default function UserSettings() {
       });
       toast({
         title: "Operacion realizada con exito",
-        description: `se guardo la categoria "${values.category}"`,
+        description: (
+          <span>
+            se actualizo correctamente la informacion de usuario con la
+            categoria <code className="font-bold">{values.category}</code> y el
+            genero <code className="font-bold">{values.gender}</code>{" "}
+          </span>
+        ),
       });
     } catch (error: any) {
       toast({
