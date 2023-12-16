@@ -33,7 +33,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="mt-2 border-b px-2 py-2 sm:flex sm:justify-between">
+    <header className="mt-2 border-b border-border px-2 py-2 sm:flex sm:justify-between">
       <Container>
         <div className="relative flex h-16 w-full items-center justify-between px-2 sm:px-6 lg:px-8">
           <div className="flex items-center">
