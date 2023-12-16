@@ -32,8 +32,22 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 
+const CATEGORIES = [
+  "Primera",
+  "Segunda",
+  "Tercera",
+  "Cuarta",
+  "Quinta",
+  "Sexta",
+  "Septima",
+  "Octava",
+] as const;
+
+const GENDER = ["Hombre", "Mujer"] as const;
+
 const formSchema = z.object({
-  category: z.string().min(2),
+  category: z.enum(CATEGORIES),
+  gender: z.enum(GENDER),
 });
 
 export default function UserSettings() {
@@ -42,7 +56,6 @@ export default function UserSettings() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { category: "" },
   });
 
   const { isSubmitting } = form.formState;
@@ -50,9 +63,11 @@ export default function UserSettings() {
 
   useEffect(() => {
     if (isLoaded && user) {
-      console.log("heere", user.unsafeMetadata.category);
       const halt = setTimeout(function () {
-        reset({ category: user.unsafeMetadata.category as string });
+        reset({
+          category: user.unsafeMetadata.category as (typeof CATEGORIES)[number],
+          gender: user.unsafeMetadata.gender as (typeof GENDER)[number],
+        });
       }, 1);
       return () => clearTimeout(halt);
     }
@@ -60,7 +75,9 @@ export default function UserSettings() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await user?.update({ unsafeMetadata: { category: values.category } });
+      await user?.update({
+        unsafeMetadata: { category: values.category, gender: values.gender },
+      });
       toast({
         title: "Operacion realizada con exito",
         description: `se guardo la categoria "${values.category}"`,
@@ -76,9 +93,10 @@ export default function UserSettings() {
 
   return (
     <div className="m-8">
+      <h2 className="mb-8 text-3xl font-bold tracking-tight">Andres Aguirre</h2>
       <Card className="max-w-md">
         <CardHeader>
-          <CardTitle>Ajustes de jugador</CardTitle>
+          <CardTitle className="text-lg">Ajustes de jugador</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -96,14 +114,30 @@ export default function UserSettings() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Primera">Primera</SelectItem>
-                        <SelectItem value="Segunda">Segunda</SelectItem>
-                        <SelectItem value="Tercera">Tercera</SelectItem>
-                        <SelectItem value="Cuarta">Cuarta</SelectItem>
-                        <SelectItem value="Quinta">Quinta</SelectItem>
-                        <SelectItem value="Sexta">Sexta</SelectItem>
-                        <SelectItem value="Septima">Septima</SelectItem>
-                        <SelectItem value="Octava">Octava</SelectItem>
+                        <SelectItem value={CATEGORIES[0]}>
+                          {CATEGORIES[0]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[1]}>
+                          {CATEGORIES[1]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[2]}>
+                          {CATEGORIES[2]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[3]}>
+                          {CATEGORIES[3]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[4]}>
+                          {CATEGORIES[4]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[5]}>
+                          {CATEGORIES[5]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[6]}>
+                          {CATEGORIES[6]}
+                        </SelectItem>
+                        <SelectItem value={CATEGORIES[7]}>
+                          {CATEGORIES[7]}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription>
@@ -113,10 +147,31 @@ export default function UserSettings() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sexo</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona tu genero" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={GENDER[0]}>{GENDER[0]}</SelectItem>
+                        <SelectItem value={GENDER[1]}>{GENDER[1]}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <CardFooter>
                 {!isSubmitting && (
                   <Button
-                    disabled={!form.formState.isValid && form.formState.isDirty}
+                    disabled={!form.formState.isDirty}
                     className="w-full"
                     type="submit"
                   >
