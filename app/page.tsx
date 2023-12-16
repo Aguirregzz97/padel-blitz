@@ -1,8 +1,9 @@
 import Header from "@/components/Header/Header";
 import Container from "@/components/ui/Container";
-import { useState } from "react";
 
 export default function Home() {
+  console.log("heere", process.env.DATABASE_HOST);
+
   return (
     <Container>
       <Header />
