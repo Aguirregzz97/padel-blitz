@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "introspect": "drizzle-kit introspect:mysql"
+    "introspect": "drizzle-kit introspect:mysql",
+    "generate": "drizzle-kit generate:mysql",
+    "push": "drizzle-kit push:mysql"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.28.0",

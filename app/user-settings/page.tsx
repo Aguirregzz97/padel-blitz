@@ -32,7 +32,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 
-const CATEGORIES = [
+export const CATEGORIES = [
   "Primera",
   "Segunda",
   "Tercera",

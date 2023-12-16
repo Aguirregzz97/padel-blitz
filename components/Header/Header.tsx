@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Menu, Moon, Sun, UserCog } from "lucide-react";
 import Container from "../ui/Container";
 import { Button } from "../ui/button";
@@ -14,16 +19,16 @@ const Header = () => {
   const router = useRouter();
   const routes = [
     {
-      href: "/",
-      label: "Products",
+      href: "/mis-juegos",
+      label: "Mis Juegos",
+    },
+    {
+      href: "/torneos",
+      label: "Explorar Torneos",
     },
     {
       href: "/",
-      label: "Categories",
-    },
-    {
-      href: "/",
-      label: "On Sale",
+      label: "Crear Torneo",
     },
   ];
 
@@ -39,13 +44,15 @@ const Header = () => {
               <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                 <nav className="flex flex-col gap-4">
                   {routes.map((route, i) => (
-                    <Link
-                      key={i}
-                      href={route.href}
-                      className="block px-2 py-1 text-lg"
-                    >
-                      {route.label}
-                    </Link>
+                    <SheetClose asChild key={i}>
+                      <Link
+                        key={i}
+                        href={route.href}
+                        className="block px-2 py-1 text-lg"
+                      >
+                        {route.label}
+                      </Link>
+                    </SheetClose>
                   ))}
                 </nav>
               </SheetContent>
