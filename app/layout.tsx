@@ -3,6 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
+import Header from "@/components/Header/Header";
+import Container from "@/components/ui/Container";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +23,21 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html suppressHydrationWarning={true} className="h-full" lang="en">
-        <body className={inter.className}>
+      <html
+        suppressHydrationWarning
+        className={`${GeistSans.variable} ${GeistMono.variable} h-full`}
+        lang="en"
+      >
+        <body
+          suppressHydrationWarning
+          className={`${inter.className} h-full bg-background`}
+        >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <Toaster />
+            <Container>
+              <Header />
+              {children}
+            </Container>
           </ThemeProvider>
         </body>
       </html>

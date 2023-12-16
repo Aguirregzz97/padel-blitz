@@ -19,13 +19,13 @@ const ProfileButton = () => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Avatar className="bg-muted">
+          <Avatar className="h-8 w-8 bg-muted">
             <AvatarImage src="/img/profile.png" />
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href="sign-in">
             <DropdownMenuItem className="cursor-pointer">

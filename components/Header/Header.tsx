@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun, UserCog } from "lucide-react";
 import Container from "../ui/Container";
 import { Button } from "../ui/button";
 import ProfileButton from "./ProfileButton";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const routes = [
     {
       href: "/",
@@ -26,7 +28,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="mt-2 border-b border-primary px-2 py-2 sm:flex sm:justify-between">
+    <header className="mt-2 border-b px-2 py-2 sm:flex sm:justify-between">
       <Container>
         <div className="relative flex h-16 w-full items-center justify-between px-2 sm:px-6 lg:px-8">
           <div className="flex items-center">
@@ -68,6 +70,15 @@ const Header = () => {
             ))}
           </nav>
           <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="User Settings"
+              className="mr-1"
+              onClick={() => router.push("/user-settings")}
+            >
+              <UserCog />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
