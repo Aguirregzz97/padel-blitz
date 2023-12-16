@@ -1,8 +1,18 @@
-import Header from "@/components/Header/Header";
-import Container from "@/components/ui/Container";
+import Image from "next/image";
 
 export default function Home() {
-  console.log("heere", process.env.DATABASE_HOST);
-
-  return <div className="m-8">this is body</div>;
+  return (
+    <div className="m-8 mt-20 flex flex-col items-center gap-8 text-center">
+      <h2 className="text-3xl font-bold tracking-tight">
+        El mejor sitio para administrar tu torneo de padel
+      </h2>
+      <Image
+        className="rounded-lg"
+        width={500}
+        height={500}
+        src="/img/padel-homescreen.jpeg"
+        alt="torneo padel img"
+      />
+    </div>
+  );
 }
