@@ -9,6 +9,7 @@
     "lint": "next lint",
     "introspect": "drizzle-kit introspect:mysql",
     "generate": "drizzle-kit generate:mysql",
+    "drop": "drizzle-kit drop",
     "push": "drizzle-kit push:mysql"
   },
   "dependencies": {
