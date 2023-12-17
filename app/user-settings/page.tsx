@@ -31,19 +31,20 @@ import { useUser } from "@clerk/nextjs";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
-import useCategories from "@/queries/categories/useCategories";
+import useCategoryTypes from "@/queries/category_type/useCategoryTypes";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const GENDER = ["Hombre", "Mujer"] as const;
 
 const formSchema = z.object({
-  category: z.string(),
+  categoryType: z.string(),
   gender: z.enum(GENDER),
 });
 
 export default function UserSettings() {
   const { user, isLoaded } = useUser();
-  const { data: categories, isLoading: isLoadingCategories } = useCategories();
+  const { data: categoryTypes, isLoading: isLoadingCategoryTypes } =
+    useCategoryTypes();
 
   const { toast } = useToast();
 
@@ -58,7 +59,7 @@ export default function UserSettings() {
     if (isLoaded && user) {
       const halt = setTimeout(function () {
         reset({
-          category: user.unsafeMetadata.category as string,
+          categoryType: user.unsafeMetadata.category_type as string,
           gender: user.unsafeMetadata.gender as (typeof GENDER)[number],
         });
       }, 1);
@@ -72,7 +73,10 @@ export default function UserSettings() {
   ) {
     try {
       await user?.update({
-        unsafeMetadata: { category: values.category, gender: values.gender },
+        unsafeMetadata: {
+          category_type: values.categoryType,
+          gender: values.gender,
+        },
       });
       toast({
         title: "Operacion realizada con exito",
@@ -106,19 +110,20 @@ export default function UserSettings() {
               onSubmit={form.handleSubmit((data) => {
                 onSubmit(
                   data,
-                  categories?.find((cat) => cat.id.toString() === data.category)
-                    ?.category_name || "",
+                  categoryTypes?.find(
+                    (cat) => cat.id.toString() === data.categoryType,
+                  )?.category_name || "",
                 );
               })}
               className="space-y-8"
             >
               <FormField
                 control={form.control}
-                name="category"
+                name="categoryType"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoria</FormLabel>
-                    {isLoadingCategories ? (
+                    {isLoadingCategoryTypes ? (
                       <Skeleton className="h-9 w-full" />
                     ) : (
                       <Select
@@ -131,7 +136,7 @@ export default function UserSettings() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories?.map((category, idx) => {
+                          {categoryTypes?.map((category, idx) => {
                             return (
                               <SelectItem
                                 key={idx}
@@ -157,7 +162,7 @@ export default function UserSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sexo</FormLabel>
-                    {isLoadingCategories ? (
+                    {isLoadingCategoryTypes ? (
                       <Skeleton className="h-9 w-full" />
                     ) : (
                       <Select
@@ -180,7 +185,7 @@ export default function UserSettings() {
                 )}
               />
               <CardFooter>
-                {(!isSubmitting || isLoadingCategories) && (
+                {(!isSubmitting || isLoadingCategoryTypes) && (
                   <Button
                     disabled={!form.formState.isDirty}
                     className="w-full"

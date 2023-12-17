@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "36959c3e-e0e4-4b54-a182-9824b67b46a4",
+  "id": "782499db-e9b6-477f-b07a-aa5091cb323e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "categories": {
-      "name": "categories",
+    "category_types": {
+      "name": "category_types",
       "columns": {
         "id": {
           "name": "id",
@@ -25,8 +25,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "categories_id": {
-          "name": "categories_id",
+        "category_types_id": {
+          "name": "category_types_id",
           "columns": [
             "id"
           ]
