@@ -69,7 +69,7 @@ export default function UserSettings() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await user?.update({
-        unsafeMetadata: { category: values.category, gender: values.gender },
+        unsafeMetadata: { category_id: values.category, gender: values.gender },
       });
       toast({
         title: "Operacion realizada con exito",
@@ -145,17 +145,24 @@ export default function UserSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sexo</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona tu genero" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={GENDER[0]}>{GENDER[0]}</SelectItem>
-                        <SelectItem value={GENDER[1]}>{GENDER[1]}</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {isLoadingCategories ? (
+                      <Skeleton className="h-9 w-full" />
+                    ) : (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona tu genero" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={GENDER[0]}>{GENDER[0]}</SelectItem>
+                          <SelectItem value={GENDER[1]}>{GENDER[1]}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
