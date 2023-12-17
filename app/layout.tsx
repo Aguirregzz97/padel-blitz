@@ -8,6 +8,7 @@ import Container from "@/components/ui/Container";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
+import TanstackProvider from "@/Providers/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,13 +33,15 @@ export default function RootLayout({
           suppressHydrationWarning
           className={`${inter.className} h-full bg-background`}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Toaster />
-            <Container>
-              <Header />
-              {children}
-            </Container>
-          </ThemeProvider>
+          <TanstackProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Toaster />
+              <Container>
+                <Header />
+                {children}
+              </Container>
+            </ThemeProvider>
+          </TanstackProvider>
         </body>
       </html>
     </ClerkProvider>

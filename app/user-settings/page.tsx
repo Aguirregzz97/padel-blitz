@@ -31,27 +31,20 @@ import { useUser } from "@clerk/nextjs";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
-
-export const CATEGORIES = [
-  "Primera",
-  "Segunda",
-  "Tercera",
-  "Cuarta",
-  "Quinta",
-  "Sexta",
-  "Septima",
-  "Octava",
-] as const;
+import useCategories from "@/queries/categories/useCategories";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const GENDER = ["Hombre", "Mujer"] as const;
 
 const formSchema = z.object({
-  category: z.enum(CATEGORIES),
+  category: z.string(),
   gender: z.enum(GENDER),
 });
 
 export default function UserSettings() {
   const { user, isLoaded } = useUser();
+  const { data: categories, isLoading: isLoadingCategories } = useCategories();
+
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,7 +58,7 @@ export default function UserSettings() {
     if (isLoaded && user) {
       const halt = setTimeout(function () {
         reset({
-          category: user.unsafeMetadata.category as (typeof CATEGORIES)[number],
+          category: user.unsafeMetadata.category as string,
           gender: user.unsafeMetadata.gender as (typeof GENDER)[number],
         });
       }, 1);
@@ -113,39 +106,32 @@ export default function UserSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoria</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona tu categoria" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={CATEGORIES[0]}>
-                          {CATEGORIES[0]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[1]}>
-                          {CATEGORIES[1]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[2]}>
-                          {CATEGORIES[2]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[3]}>
-                          {CATEGORIES[3]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[4]}>
-                          {CATEGORIES[4]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[5]}>
-                          {CATEGORIES[5]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[6]}>
-                          {CATEGORIES[6]}
-                        </SelectItem>
-                        <SelectItem value={CATEGORIES[7]}>
-                          {CATEGORIES[7]}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {isLoadingCategories ? (
+                      <Skeleton className="h-9 w-full" />
+                    ) : (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona tu categoria" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories?.map((category, idx) => {
+                            return (
+                              <SelectItem
+                                key={idx}
+                                value={category.id.toString()}
+                              >
+                                {category.category_name}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                    )}
                     <FormDescription>
                       Esta es tu categoria, abajo los cachirules, se honesto
                     </FormDescription>
@@ -175,7 +161,7 @@ export default function UserSettings() {
                 )}
               />
               <CardFooter>
-                {!isSubmitting && (
+                {(!isSubmitting || isLoadingCategories) && (
                   <Button
                     disabled={!form.formState.isDirty}
                     className="w-full"
