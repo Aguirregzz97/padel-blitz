@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "aecdbd14-d46e-469d-b162-1a039897f2ec",
+  "id": "36959c3e-e0e4-4b54-a182-9824b67b46a4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -11,7 +11,7 @@
           "name": "id",
           "type": "serial",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": true
         },
         "category_name": {
@@ -24,7 +24,14 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "categories_id": {
+          "name": "categories_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     }
   },

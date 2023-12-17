@@ -66,17 +66,20 @@ export default function UserSettings() {
     }
   }, [user, isLoaded, form, reset]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof formSchema>,
+    category_name: string,
+  ) {
     try {
       await user?.update({
-        unsafeMetadata: { category_id: values.category, gender: values.gender },
+        unsafeMetadata: { category: values.category, gender: values.gender },
       });
       toast({
         title: "Operacion realizada con exito",
         description: (
           <span>
             se actualizo correctamente la informacion de usuario con la
-            categoria <code className="font-bold">{values.category}</code> y el
+            categoria <code className="font-bold">{category_name}</code> y el
             genero <code className="font-bold">{values.gender}</code>{" "}
           </span>
         ),
@@ -99,7 +102,16 @@ export default function UserSettings() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={form.handleSubmit((data) => {
+                onSubmit(
+                  data,
+                  categories?.find((cat) => cat.id.toString() === data.category)
+                    ?.category_name || "",
+                );
+              })}
+              className="space-y-8"
+            >
               <FormField
                 control={form.control}
                 name="category"

@@ -29,6 +29,6 @@ import {
 // });
 
 export const categories = mysqlTable("categories", {
-  id: serial("id").autoincrement(),
+  id: serial("id").primaryKey(),
   category_name: varchar("category_name", { length: 256 }),
 });
