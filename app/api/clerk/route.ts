@@ -66,7 +66,8 @@ export async function POST(request: Request) {
           ? (payload.data.unsafe_metadata.gender as string)
           : null,
       })
-      .where(eq(users.id, payload.data.id));
+      .where(eq(users.id, payload.data.id))
+      .returning();
 
     console.log("\nuser updated:\n", updatedUser);
   }
