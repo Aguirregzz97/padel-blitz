@@ -7,15 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "introspect": "drizzle-kit introspect:mysql",
-    "generate": "drizzle-kit generate:mysql",
+    "introspect": "drizzle-kit introspect:pg",
+    "generate": "drizzle-kit generate:pg",
     "drop": "drizzle-kit drop",
-    "push": "drizzle-kit push:mysql"
+    "push": "drizzle-kit push:pg"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.28.0",
     "@hookform/resolvers": "^3.3.2",
-    "@planetscale/database": "^1.11.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
@@ -56,6 +55,7 @@
     "lucide-react": "^0.295.0",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
+    "postgres": "^3.4.3",
     "react": "^18",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",

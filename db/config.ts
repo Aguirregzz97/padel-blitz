@@ -3,3 +3,5 @@ export const config = {
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
 };
+
+export const connectionString = process.env.DATABASE_URL;

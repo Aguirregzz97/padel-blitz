@@ -1,11 +1,11 @@
-import { config } from "@/db/config";
+import { connectionString } from "@/db/config";
 import { category_types } from "@/db/schema";
-import { connect } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
 export default async function getCategoryTypes() {
-  const conn = connect(config);
-  const db = drizzle(conn);
+  const client = postgres(connectionString || "", { prepare: false });
+  const db = drizzle(client);
 
   return await db.select().from(category_types);
 }

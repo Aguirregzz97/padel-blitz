@@ -29,7 +29,12 @@ const ProfileButton = () => {
           <DropdownMenuSeparator />
           <Link href="sign-in">
             <DropdownMenuItem className="cursor-pointer">
-              Sign In
+              Iniciar Sesion
+            </DropdownMenuItem>
+          </Link>
+          <Link href="sign-up">
+            <DropdownMenuItem className="cursor-pointer">
+              Crear Cuenta
             </DropdownMenuItem>
           </Link>
         </DropdownMenuContent>

@@ -43,6 +43,7 @@ const formSchema = z.object({
 
 export default function UserSettings() {
   const { user, isLoaded } = useUser();
+
   const { data: categoryTypes, isLoading: isLoadingCategoryTypes } =
     useCategoryTypes();
 
