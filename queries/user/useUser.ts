@@ -7,7 +7,7 @@ async function queryUser(userId: string) {
   return response.data;
 }
 
-export default function useUser(userId: string, enabled: boolean) {
+export default function useDbUser(userId: string, enabled: boolean) {
   return useQuery({
     queryKey: ["user", userId],
     queryFn: () => queryUser(userId),
