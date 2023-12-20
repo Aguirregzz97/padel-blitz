@@ -100,24 +100,24 @@ export default function UserSettings() {
 
   return (
     <div className="m-8">
-      <h2 className="mb-8 text-3xl font-bold tracking-tight">Andres Aguirre</h2>
       <Card className="max-w-md">
         <CardHeader>
-          <CardTitle className="text-lg">Ajustes de jugador</CardTitle>
+          <CardTitle className="text-md">
+            {user?.firstName} {user?.lastName}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit((data) => {
-                onSubmit(
-                  data,
-                  categoryTypes?.find(
-                    (cat) => cat.id.toString() === data.categoryType,
-                  )?.category_name || "",
-                );
-              })}
-              className="space-y-8"
-            >
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((data) => {
+              onSubmit(
+                data,
+                categoryTypes?.find(
+                  (cat) => cat.id.toString() === data.categoryType,
+                )?.category_name || "",
+              );
+            })}
+          >
+            <CardContent className="mb-3 flex flex-col gap-y-3">
               <FormField
                 control={form.control}
                 name="categoryType"
@@ -185,26 +185,26 @@ export default function UserSettings() {
                   </FormItem>
                 )}
               />
-              <CardFooter>
-                {(!isSubmitting || isLoadingCategoryTypes) && (
-                  <Button
-                    disabled={!form.formState.isDirty}
-                    className="w-full"
-                    type="submit"
-                  >
-                    Guardar
-                  </Button>
-                )}
-                {isSubmitting && (
-                  <Button className="w-full" disabled>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                    Loading
-                  </Button>
-                )}
-              </CardFooter>
-            </form>
-          </Form>
-        </CardContent>
+            </CardContent>
+            <CardFooter>
+              {(!isSubmitting || isLoadingCategoryTypes) && (
+                <Button
+                  disabled={!form.formState.isDirty}
+                  className="w-full"
+                  type="submit"
+                >
+                  Guardar
+                </Button>
+              )}
+              {isSubmitting && (
+                <Button className="w-full" disabled>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Loading
+                </Button>
+              )}
+            </CardFooter>
+          </form>
+        </Form>
       </Card>
     </div>
   );

@@ -12,11 +12,12 @@ import { Menu, Moon, Sun, UserCog } from "lucide-react";
 import Container from "../ui/Container";
 import { Button } from "../ui/button";
 import ProfileButton from "./ProfileButton";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
   const routes = [
     {
       href: "/mis-juegos",
@@ -24,11 +25,11 @@ const Header = () => {
     },
     {
       href: "/torneos",
-      label: "Explorar Torneos",
+      label: "Torneos",
     },
     {
-      href: "/",
-      label: "Crear Torneo",
+      href: "/jugadores",
+      label: "Jugadores",
     },
   ];
 
@@ -65,7 +66,14 @@ const Header = () => {
           </div>
           <nav className="mx-6 hidden items-center space-x-4 md:block lg:space-x-6">
             {routes.map((route, i) => (
-              <Button key={i} asChild variant="ghost">
+              <Button
+                className={`${
+                  pathname.includes(route.href) ? "bg-accent" : ""
+                }`}
+                key={i}
+                asChild
+                variant="ghost"
+              >
                 <Link
                   key={i}
                   href={route.href}
@@ -81,7 +89,9 @@ const Header = () => {
               variant="ghost"
               size="icon"
               aria-label="User Settings"
-              className="mr-1"
+              className={`mr-1 ${
+                pathname.includes("user-settings") ? "bg-accent" : ""
+              }`}
               onClick={() => router.push("/user-settings")}
             >
               <UserCog />
