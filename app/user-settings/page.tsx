@@ -100,7 +100,7 @@ export default function UserSettings() {
 
   return (
     <div className="m-8">
-      <Card className="max-w-md">
+      <Card className="max-w-lg">
         <CardHeader>
           <CardTitle className="text-md">
             {user?.firstName} {user?.lastName}
@@ -117,7 +117,7 @@ export default function UserSettings() {
               );
             })}
           >
-            <CardContent className="mb-3 flex flex-col gap-y-3">
+            <CardContent className="mb-3 flex flex-col gap-y-6">
               <FormField
                 control={form.control}
                 name="categoryType"
@@ -150,9 +150,6 @@ export default function UserSettings() {
                         </SelectContent>
                       </Select>
                     )}
-                    <FormDescription>
-                      Esta es tu categoria, abajo los cachirules, se honesto
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

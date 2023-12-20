@@ -91,7 +91,7 @@ export default function CreateTournamentForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="mb-3 flex flex-col gap-y-4">
+        <CardContent className="mb-3 flex flex-col gap-y-6">
           <FormField
             control={form.control}
             name="name"

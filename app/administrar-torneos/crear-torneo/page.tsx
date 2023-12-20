@@ -9,7 +9,7 @@ import {
 
 export default function CrearTorneo() {
   return (
-    <Card className="max-w-md">
+    <Card className="max-w-lg">
       <CardHeader>
         <CardTitle className="text-md">Crear Torneo</CardTitle>
       </CardHeader>

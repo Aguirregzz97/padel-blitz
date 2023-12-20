@@ -1,3 +1,5 @@
+"use client";
+
 import { GetUserType } from "@/lib/user/getUser";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
