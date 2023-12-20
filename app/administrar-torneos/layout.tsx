@@ -13,7 +13,7 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
     <div className="m-8">
       <nav className={cn("m-2 flex items-center space-x-4 lg:space-x-6")}>
         <Link
-          href="/torneos/mis-torneos"
+          href="/administrar-torneos/mis-torneos"
           className={`text-sm font-medium transition-colors hover:text-primary ${
             !pathname.includes("/mis-torneos") ? "text-muted-foreground" : ""
           }`}
@@ -21,14 +21,20 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
           Mis torneos
         </Link>
         <Link
-          href="/torneos/explorar-torneos"
+          href="/administrar-torneos/crear-torneo"
           className={`text-sm font-medium transition-colors hover:text-primary ${
-            !pathname.includes("/explorar-torneos")
-              ? "text-muted-foreground"
-              : ""
+            !pathname.includes("/crear-torneo") ? "text-muted-foreground" : ""
           }`}
         >
-          Explorar Torneos
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle Theme"
+            className="mr-2"
+          >
+            <PlusCircle className="h-6 w-6" />
+            <span className="sr-only">Crear Torneo</span>
+          </Button>
         </Link>
       </nav>
       {children}

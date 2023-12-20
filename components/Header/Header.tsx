@@ -31,6 +31,10 @@ const Header = () => {
       href: "/jugadores",
       label: "Jugadores",
     },
+    {
+      href: "/administrar-torneos",
+      label: "Admin Torneos",
+    },
   ];
 
   return (
