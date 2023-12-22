@@ -30,19 +30,27 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import useCreateTourment from "@/mutations/useCreateTournament";
+import useCategoryTypes from "@/queries/category_type/useCategoryTypes";
+import { useEffect, useState } from "react";
+import { MultiSelect } from "../ui/multiselect";
+import { DevT } from "@/utils/reacthookform";
 
 const today = new Date();
 const two_after_tomorrow = new Date(today);
 two_after_tomorrow.setDate(two_after_tomorrow.getDate() + 3);
 
 export const createTournamentFormSchema = z.object({
-  city_id: z.string(),
-  name: z.string(),
-  address: z.string(),
-  registration_dates: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
+  city_id: z.string({ required_error: "" }).min(1),
+  name: z.string({ required_error: "" }).min(1),
+  categories: z.array(z.record(z.string().trim())).nonempty(),
+  address: z.string({ required_error: "" }).min(1),
+  registration_dates: z.object(
+    {
+      from: z.date(),
+      to: z.date(),
+    },
+    { required_error: "" },
+  ),
   tournament_dates: z.object({
     from: z.date(),
     to: z.date(),
@@ -54,8 +62,9 @@ export default function CreateTournamentForm() {
     resolver: zodResolver(createTournamentFormSchema),
     defaultValues: {
       city_id: undefined,
-      name: "",
-      address: "",
+      name: undefined,
+      categories: [],
+      address: undefined,
       registration_dates: { from: undefined, to: undefined },
       tournament_dates: { from: undefined, to: undefined },
     },
@@ -63,11 +72,30 @@ export default function CreateTournamentForm() {
 
   const { toast } = useToast();
 
+  const [categoriesOptions, setCategoriesOptions] = useState<
+    Record<string, string>[]
+  >([]);
+
   const { isSubmitting } = form.formState;
 
   const { data: cities, isLoading: isLoadingCities } = useCities();
 
+  const { data: categoryTypes, isLoading: isLoadingCategoryTypes } =
+    useCategoryTypes();
+
   const { mutateAsync } = useCreateTourment(onSuccess, onError);
+
+  useEffect(() => {
+    if (!isLoadingCategoryTypes && categoryTypes) {
+      const multiselectOptions = categoryTypes.map((ct) => {
+        return {
+          label: ct.category_name,
+          value: ct.id.toString(),
+        };
+      });
+      setCategoriesOptions(multiselectOptions);
+    }
+  }, [categoryTypes]);
 
   function onSuccess() {
     toast({
@@ -102,6 +130,25 @@ export default function CreateTournamentForm() {
                   <Input placeholder="Nombre del torneo" {...field} />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="categories"
+            render={({ field: { ...field } }) => (
+              <FormItem>
+                <FormLabel>Categorias</FormLabel>
+                {categoriesOptions.length > 0 ? (
+                  <MultiSelect
+                    selected={field.value}
+                    options={categoriesOptions}
+                    placeholder="Seleccionar..."
+                    {...field}
+                  />
+                ) : (
+                  <Skeleton className="h-9 w-full" />
+                )}
               </FormItem>
             )}
           />
@@ -212,7 +259,7 @@ export default function CreateTournamentForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona tu categoria" />
+                        <SelectValue placeholder="Selecciona" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -277,6 +324,7 @@ export default function CreateTournamentForm() {
           )}
         </CardFooter>
       </form>
+      <DevT control={form.control} />
     </Form>
   );
 }

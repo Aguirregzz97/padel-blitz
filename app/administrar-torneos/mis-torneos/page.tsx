@@ -13,18 +13,22 @@ export default function Torneos() {
       </CardHeader>
       <CardContent>
         <div className="flex gap-8">
-          {adminTournaments?.map((tournament) => {
-            return (
-              <Card className="max-w-sm">
-                <CardHeader>
-                  <CardTitle>{tournament.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>{tournament.created_at?.toString()}</div>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {adminTournaments?.length === 0 ? (
+            <p className="text-xs">No eres administrador de ningun torneo</p>
+          ) : (
+            adminTournaments?.map((tournament) => {
+              return (
+                <Card className="max-w-sm">
+                  <CardHeader>
+                    <CardTitle>{tournament.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div>{tournament.created_at?.toString()}</div>
+                  </CardContent>
+                </Card>
+              );
+            })
+          )}
         </div>
       </CardContent>
     </Card>

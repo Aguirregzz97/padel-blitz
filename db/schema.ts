@@ -4,6 +4,7 @@ import {
   integer,
   timestamp,
   serial,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -21,7 +22,7 @@ export const users = pgTable("users", {
 
 export const category_types = pgTable("category_types", {
   id: serial("id").primaryKey(),
-  category_name: varchar("category_name", { length: 256 }),
+  category_name: varchar("category_name", { length: 256 }).notNull(),
 });
 
 export const countries = pgTable("countries", {
@@ -59,3 +60,41 @@ export const tournaments = pgTable("tournaments", {
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
+
+export const category_tournaments = pgTable(
+  "category_tournaments",
+  {
+    category_type_id: integer("category_type_id")
+      .references(() => category_types.id)
+      .notNull(),
+    tournament_id: integer("tournament_id")
+      .references(() => tournaments.id)
+      .notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({
+        columns: [table.category_type_id, table.tournament_id],
+      }),
+    };
+  },
+);
+
+export const tournament_admins = pgTable(
+  "tournament_admins",
+  {
+    user_id: varchar("user_id", { length: 256 })
+      .references(() => users.id)
+      .notNull(),
+    tournament_id: integer("tournament_id")
+      .references(() => tournaments.id)
+      .notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({
+        columns: [table.user_id, table.tournament_id],
+      }),
+    };
+  },
+);

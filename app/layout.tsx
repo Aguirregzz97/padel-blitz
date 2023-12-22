@@ -26,7 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         suppressHydrationWarning
-        className={`${GeistSans.variable} ${GeistMono.variable} h-full bg-background`}
+        className={`${GeistSans.variable} ${GeistMono.variable} mb-16 h-full bg-background`}
         lang="en"
       >
         <body
