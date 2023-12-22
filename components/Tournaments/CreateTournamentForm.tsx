@@ -40,10 +40,16 @@ const two_after_tomorrow = new Date(today);
 two_after_tomorrow.setDate(two_after_tomorrow.getDate() + 3);
 
 export const createTournamentFormSchema = z.object({
-  city_id: z.string({ required_error: "" }).min(1),
-  name: z.string({ required_error: "" }).min(1),
+  city_id: z
+    .string({ required_error: "" })
+    .min(1, { message: "al menos 1 caracter" }),
+  name: z
+    .string({ required_error: "" })
+    .min(1, { message: "al menos 1 caracter" }),
   categories: z.array(z.record(z.string().trim())).nonempty(),
-  address: z.string({ required_error: "" }).min(1),
+  address: z
+    .string({ required_error: "" })
+    .min(1, { message: "al menos 1 caracter" }),
   registration_dates: z.object(
     {
       from: z.date(),
