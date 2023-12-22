@@ -11,11 +11,13 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="m-8">
-      <nav className={cn("m-2 flex items-center space-x-4 lg:space-x-6")}>
+      <nav className={cn("m-2 mb-4 flex items-center space-x-4 lg:space-x-6")}>
         <Link
           href="/administrar-torneos/mis-torneos"
           className={`text-sm font-medium transition-colors hover:text-primary ${
-            !pathname.includes("/mis-torneos") ? "text-muted-foreground" : ""
+            !pathname.includes("/mis-torneos")
+              ? "text-muted-foreground"
+              : "text-primary"
           }`}
         >
           Mis torneos
@@ -23,14 +25,16 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
         <Link
           href="/administrar-torneos/crear-torneo"
           className={`text-sm font-medium transition-colors hover:text-primary ${
-            !pathname.includes("/crear-torneo") ? "text-muted-foreground" : ""
+            !pathname.includes("/crear-torneo")
+              ? "text-muted-foreground"
+              : "text-primary"
           }`}
         >
           <Button
             variant="ghost"
             size="icon"
             aria-label="Toggle Theme"
-            className="mr-2"
+            className="mr-2 hover:text-primary"
           >
             <PlusCircle className="h-6 w-6" />
             <span className="sr-only">Crear Torneo</span>

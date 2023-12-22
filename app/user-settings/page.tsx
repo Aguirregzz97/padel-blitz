@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,8 +36,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 const GENDER = ["Hombre", "Mujer"] as const;
 
 const formSchema = z.object({
-  categoryType: z.string(),
-  gender: z.enum(GENDER),
+  categoryType: z.string().min(1),
+  gender: z.enum(GENDER, { required_error: "" }),
 });
 
 export default function UserSettings() {
@@ -51,6 +50,9 @@ export default function UserSettings() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      categoryType: undefined,
+    },
   });
 
   const { isSubmitting } = form.formState;
@@ -124,9 +126,7 @@ export default function UserSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoria</FormLabel>
-                    {isLoadingCategoryTypes ? (
-                      <Skeleton className="h-9 w-full" />
-                    ) : (
+                    {!isLoadingCategoryTypes && user ? (
                       <Select
                         value={field.value}
                         onValueChange={field.onChange}
@@ -149,6 +149,8 @@ export default function UserSettings() {
                           })}
                         </SelectContent>
                       </Select>
+                    ) : (
+                      <Skeleton className="h-9 w-full" />
                     )}
                     <FormMessage />
                   </FormItem>
@@ -160,9 +162,7 @@ export default function UserSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sexo</FormLabel>
-                    {isLoadingCategoryTypes ? (
-                      <Skeleton className="h-9 w-full" />
-                    ) : (
+                    {isLoaded && user ? (
                       <Select
                         value={field.value}
                         onValueChange={field.onChange}
@@ -177,6 +177,8 @@ export default function UserSettings() {
                           <SelectItem value={GENDER[1]}>{GENDER[1]}</SelectItem>
                         </SelectContent>
                       </Select>
+                    ) : (
+                      <Skeleton className="h-9 w-full" />
                     )}
                     <FormMessage />
                   </FormItem>
