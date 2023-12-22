@@ -12,8 +12,6 @@ export default async function createTournament(
   const client = postgres(connectionString || "", { prepare: false });
   const db = drizzle(client);
 
-  console.log(tournament.categories);
-
   const tournamentCreated = await db
     .insert(tournaments)
     .values({
