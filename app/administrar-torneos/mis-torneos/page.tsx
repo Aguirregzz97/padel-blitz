@@ -22,7 +22,7 @@ export default function Torneos() {
             ) : (
               adminTournaments?.map((tournament) => {
                 return (
-                  <Card className="max-w-sm">
+                  <Card key={tournament.id} className="max-w-sm">
                     <CardHeader>
                       <CardTitle>{tournament.name}</CardTitle>
                     </CardHeader>
