@@ -1,6 +1,10 @@
 import { createTournamentFormSchema } from "@/components/Tournaments/CreateTournamentForm";
 import { connectionString } from "@/db/config";
-import { category_tournaments, tournaments } from "@/db/schema";
+import {
+  category_tournaments,
+  tournament_admins,
+  tournaments,
+} from "@/db/schema";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { z } from "zod";
@@ -31,6 +35,11 @@ export default async function createTournament(
       category_type_id: Number(ct.value),
       tournament_id: tournamentCreated[0].id,
     });
+  });
+
+  const tournamentAdmins = await db.insert(tournament_admins).values({
+    tournament_id: tournamentCreated[0].id,
+    user_id: owner_id,
   });
 
   return tournamentCreated[0];
