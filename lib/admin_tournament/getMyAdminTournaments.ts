@@ -12,6 +12,8 @@ export default async function getMyAdminTournaments(userId: string) {
     .select({
       id: tournaments.id,
       owner_id: tournaments.owner_id,
+      owner_first_name: users.first_name,
+      owner_last_name: users.last_name,
       city_id: tournaments.owner_id,
       name: tournaments.name,
       address: tournaments.address,
@@ -28,6 +30,7 @@ export default async function getMyAdminTournaments(userId: string) {
       tournament_admins,
       eq(tournaments.id, tournament_admins.tournament_id),
     )
+    .innerJoin(users, eq(users.id, tournaments.owner_id))
     .limit(50);
 }
 

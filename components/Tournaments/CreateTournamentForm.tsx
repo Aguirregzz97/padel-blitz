@@ -95,7 +95,7 @@ export default function CreateTournamentForm() {
     if (!isLoadingCategoryTypes && categoryTypes) {
       const multiselectOptions = categoryTypes.map((ct) => {
         return {
-          label: ct.category_name,
+          label: ct.category_name || "",
           value: ct.id.toString(),
         };
       });
