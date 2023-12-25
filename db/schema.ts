@@ -6,6 +6,7 @@ import {
   serial,
   primaryKey,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: varchar("id", { length: 256 }).primaryKey(),
@@ -24,6 +25,10 @@ export const category_types = pgTable("category_types", {
   id: serial("id").primaryKey(),
   category_name: varchar("category_name", { length: 256 }),
 });
+
+export const categoryTypeRelations = relations(category_types, ({ many }) => ({
+  tournament_categories: many(category_tournaments),
+}));
 
 export const countries = pgTable("countries", {
   id: serial("id").primaryKey(),
@@ -57,6 +62,10 @@ export const tournaments = pgTable("tournaments", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
+export const tournamentRelations = relations(tournaments, ({ many }) => ({
+  categories: many(category_tournaments),
+}));
+
 export const category_tournaments = pgTable(
   "category_tournaments",
   {
@@ -76,6 +85,20 @@ export const category_tournaments = pgTable(
       }),
     };
   },
+);
+
+export const categoryTournamentsRelations = relations(
+  category_tournaments,
+  ({ one }) => ({
+    category: one(category_types, {
+      fields: [category_tournaments.category_type_id],
+      references: [category_types.id],
+    }),
+    tournament: one(tournaments, {
+      fields: [category_tournaments.tournament_id],
+      references: [tournaments.id],
+    }),
+  }),
 );
 
 export const tournament_admins = pgTable(

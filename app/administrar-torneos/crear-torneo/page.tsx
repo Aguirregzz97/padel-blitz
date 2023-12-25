@@ -1,11 +1,5 @@
 import CreateTournamentForm from "@/components/Tournaments/CreateTournamentForm";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CrearTorneo() {
   return (

@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { tournaments } from "@/db/schema";
 import useMyAdminTournaments from "@/queries/admin_tournaments/useMyAdminTournaments";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import { ArrowRight, Settings2 } from "lucide-react";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
 
 export default function Torneos() {
   const { data: adminTournaments, isLoading } = useMyAdminTournaments();
@@ -17,10 +17,10 @@ export default function Torneos() {
         <CardTitle className="text-md">Mis Torneos</CardTitle>
       </CardHeader>
       <CardContent>
-        {isLoading && tournaments ? (
+        {isLoading || !adminTournaments ? (
           <ReloadIcon className="mr-2 h-5 w-5 animate-spin text-primary" />
         ) : (
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-4">
             {adminTournaments?.length === 0 ? (
               <p className="text-xs">No eres administrador de ningun torneo</p>
             ) : (
@@ -30,9 +30,16 @@ export default function Torneos() {
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle>{tournament.name}</CardTitle>
-                        <Button className="hover:text-primary" variant="ghost">
-                          <Settings2 className="h-6 w-6" />
-                        </Button>
+                        <Link
+                          href={`/administrar-torneos/mis-torneos/${tournament.id}`}
+                        >
+                          <Button
+                            className="p-2 hover:text-primary"
+                            variant="ghost"
+                          >
+                            <Pencil className="h-5 w-5" />
+                          </Button>
+                        </Link>
                       </div>
                     </CardHeader>
                     <CardContent>

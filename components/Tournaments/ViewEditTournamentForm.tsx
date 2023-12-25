@@ -29,18 +29,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
-import useCreateTourment from "@/mutations/useCreateTournament";
 import useCategoryTypes from "@/queries/category_type/useCategoryTypes";
 import { useEffect, useState } from "react";
 import { MultiSelect } from "../ui/multiselect";
 import { DevT } from "@/utils/reacthookform";
-import { useRouter } from "next/navigation";
+import { getTournamentType } from "@/lib/torunament/getTournament";
+import useUpdateTournament from "@/mutations/useUpdateTournament";
 
 const today = new Date();
 const two_after_tomorrow = new Date(today);
 two_after_tomorrow.setDate(two_after_tomorrow.getDate() + 3);
 
-export const createTournamentFormSchema = z.object({
+export const editTournamentFormSchema = z.object({
   city_id: z
     .string({ required_error: "" })
     .min(1, { message: "al menos 1 caracter" }),
@@ -64,18 +64,31 @@ export const createTournamentFormSchema = z.object({
   }),
 });
 
-export default function CreateTournamentForm() {
-  const router = useRouter();
-
-  const form = useForm<z.infer<typeof createTournamentFormSchema>>({
-    resolver: zodResolver(createTournamentFormSchema),
+export default function ViewEditTournamentForm({
+  tournament,
+}: {
+  tournament: Exclude<getTournamentType, undefined>;
+}) {
+  const form = useForm<z.infer<typeof editTournamentFormSchema>>({
+    resolver: zodResolver(editTournamentFormSchema),
     defaultValues: {
-      city_id: undefined,
-      name: undefined,
-      categories: [],
-      address: undefined,
-      registration_dates: { from: undefined, to: undefined },
-      tournament_dates: { from: undefined, to: undefined },
+      city_id: tournament.city_id?.toString(),
+      name: tournament.name as string,
+      categories: tournament.categories.map((c) => {
+        return {
+          label: c.category.category_name as string,
+          value: c.category_type_id.toString(),
+        };
+      }),
+      address: tournament.address as string,
+      registration_dates: {
+        from: new Date(tournament.registration_start_at as Date),
+        to: new Date(tournament.registration_end_at as Date),
+      },
+      tournament_dates: {
+        from: new Date(tournament.tournament_start_at as Date),
+        to: new Date(tournament.tournament_end_at as Date),
+      },
     },
   });
 
@@ -92,7 +105,7 @@ export default function CreateTournamentForm() {
   const { data: categoryTypes, isLoading: isLoadingCategoryTypes } =
     useCategoryTypes();
 
-  const { mutateAsync } = useCreateTourment(onSuccess, onError);
+  const { mutateAsync } = useUpdateTournament(onSuccess, onError);
 
   useEffect(() => {
     if (!isLoadingCategoryTypes && categoryTypes) {
@@ -109,9 +122,8 @@ export default function CreateTournamentForm() {
   function onSuccess() {
     toast({
       title: "Operacion realizada con exito",
-      description: <span>Se creo el torneo correctamente</span>,
+      description: <span>Se actualizo el torneo correctamente</span>,
     });
-    router.push("/administrar-torneos/mis-torneos");
   }
 
   function onError(error: Error) {
@@ -122,8 +134,8 @@ export default function CreateTournamentForm() {
     });
   }
 
-  async function onSubmit(values: z.infer<typeof createTournamentFormSchema>) {
-    await mutateAsync(values);
+  async function onSubmit(values: z.infer<typeof editTournamentFormSchema>) {
+    await mutateAsync({ ...values, tournamentId: tournament.id });
   }
 
   return (

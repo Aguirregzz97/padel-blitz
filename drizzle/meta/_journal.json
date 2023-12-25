@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1702916816903,
-      "tag": "0000_messy_maximus",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1703023350732,
-      "tag": "0001_powerful_squadron_supreme",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1703200526820,
-      "tag": "0002_cheerful_radioactive_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1703291125461,
-      "tag": "0003_petite_purifiers",
+      "when": 1703541676368,
+      "tag": "0000_same_kang",
       "breakpoints": true
     }
   ]
