@@ -21,6 +21,15 @@ export const users = pgTable("users", {
   last_sign_in_at: timestamp("last_sign_in_at"),
 });
 
+export const userRelations = relations(users, ({ many, one }) => ({
+  admin_tournaments: many(tournament_admins),
+  category_type: one(category_types, {
+    fields: [users.category_type_id],
+    references: [category_types.id],
+  }),
+  tournaments_owned: many(tournaments),
+}));
+
 export const category_types = pgTable("category_types", {
   id: serial("id").primaryKey(),
   category_name: varchar("category_name", { length: 256 }),
@@ -28,6 +37,7 @@ export const category_types = pgTable("category_types", {
 
 export const categoryTypeRelations = relations(category_types, ({ many }) => ({
   tournament_categories: many(category_tournaments),
+  users: many(users),
 }));
 
 export const countries = pgTable("countries", {
@@ -35,17 +45,34 @@ export const countries = pgTable("countries", {
   name: varchar("name", { length: 256 }),
 });
 
+export const countriesRelations = relations(countries, ({ many }) => ({
+  states: many(states),
+}));
+
 export const states = pgTable("states", {
   id: serial("id").primaryKey(),
   country_id: integer("country_id").references(() => countries.id),
   name: varchar("name", { length: 256 }),
 });
 
+export const statesRelations = relations(states, ({ one, many }) => ({
+  country: one(countries, {
+    fields: [states.country_id],
+    references: [countries.id],
+  }),
+  cities: many(cities),
+}));
+
 export const cities = pgTable("cities", {
   id: serial("id").primaryKey(),
   state_id: integer("state_id").references(() => states.id),
   name: varchar("name", { length: 2566 }),
 });
+
+export const citiesRelations = relations(cities, ({ one, many }) => ({
+  state: one(states, { fields: [cities.state_id], references: [states.id] }),
+  tournaments: many(tournaments),
+}));
 
 export const tournaments = pgTable("tournaments", {
   id: serial("id").primaryKey(),
@@ -62,8 +89,11 @@ export const tournaments = pgTable("tournaments", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
-export const tournamentRelations = relations(tournaments, ({ many }) => ({
+export const tournamentRelations = relations(tournaments, ({ many, one }) => ({
   categories: many(category_tournaments),
+  admins: many(tournament_admins),
+  owner: one(users, { fields: [tournaments.owner_id], references: [users.id] }),
+  city: one(cities, { fields: [tournaments.city_id], references: [cities.id] }),
 }));
 
 export const category_tournaments = pgTable(
@@ -122,4 +152,18 @@ export const tournament_admins = pgTable(
       }),
     };
   },
+);
+
+export const tournamentAdminRelations = relations(
+  tournament_admins,
+  ({ one }) => ({
+    tournament: one(tournaments, {
+      fields: [tournament_admins.tournament_id],
+      references: [tournaments.id],
+    }),
+    user: one(users, {
+      fields: [tournament_admins.user_id],
+      references: [users.id],
+    }),
+  }),
 );
