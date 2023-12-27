@@ -22,7 +22,7 @@ export default function Torneos() {
         <CardTitle className="text-md">
           <div className="mt-1 flex items-center">
             Mis Torneos
-            <Trophy className="ml-2 h-5 w-5 text-primary" />
+            <Trophy className="ml-2 h-5 w-5" />
           </div>
         </CardTitle>
       </CardHeader>
