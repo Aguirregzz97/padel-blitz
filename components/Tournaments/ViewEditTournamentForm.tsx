@@ -35,6 +35,12 @@ import { MultiSelect } from "../ui/multiselect";
 import { DevT } from "@/utils/reacthookform";
 import { getTournamentType } from "@/lib/torunament/getTournament";
 import useUpdateTournament from "@/mutations/useUpdateTournament";
+import { UploadButton } from "@/utils/uploadthing";
+import useUpdateTournamentBannerUrl from "@/mutations/useUpdateTournamentBannerUrl";
+import { Image } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const today = new Date();
 const two_after_tomorrow = new Date(today);
@@ -66,8 +72,10 @@ export const editTournamentFormSchema = z.object({
 
 export default function ViewEditTournamentForm({
   tournament,
+  refetchTournament,
 }: {
   tournament: Exclude<getTournamentType, undefined>;
+  refetchTournament: () => void;
 }) {
   const form = useForm<z.infer<typeof editTournamentFormSchema>>({
     resolver: zodResolver(editTournamentFormSchema),
@@ -107,6 +115,11 @@ export default function ViewEditTournamentForm({
 
   const { mutateAsync } = useUpdateTournament(onSuccess, onError);
 
+  const { mutateAsync: mutateBannerUrl } = useUpdateTournamentBannerUrl(
+    onSuccessUpdateBannerUrl,
+    onError,
+  );
+
   useEffect(() => {
     if (!isLoadingCategoryTypes && categoryTypes) {
       const multiselectOptions = categoryTypes.map((ct) => {
@@ -124,6 +137,14 @@ export default function ViewEditTournamentForm({
       title: "Operacion realizada con exito",
       description: <span>Se actualizo el torneo correctamente</span>,
     });
+  }
+
+  function onSuccessUpdateBannerUrl() {
+    toast({
+      title: "Operacion realizada con exito",
+      description: <span>Se subio el banner correctamente</span>,
+    });
+    refetchTournament();
   }
 
   function onError(error: Error) {
@@ -315,18 +336,47 @@ export default function ViewEditTournamentForm({
               </FormItem>
             )}
           />
-          {/* <UploadButton
-              endpoint="imageUploader"
-              onClientUploadComplete={(res: any) => {
-                // Do something with the response
-                console.log("Files: ", res);
-                alert("Upload Completed");
-              }}
-              onUploadError={(error: Error) => {
-                // Do something with the error.
-                alert(`ERROR! ${error.message}`);
-              }}
-            /> */}
+          <FormItem>
+            <FormLabel>Banner</FormLabel>
+            <div className="flex gap-2">
+              <FormControl>
+                <UploadButton
+                  appearance={{
+                    button: "bg-primary after:bg-muted",
+                  }}
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res: { url: string }[]) => {
+                    mutateBannerUrl({
+                      bannerUrl: res[0].url,
+                      tournamentId: tournament.id,
+                    });
+                  }}
+                  onUploadError={(error: Error) => {
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+              {tournament.banner_url && (
+                <Link href={tournament.banner_url} target="_blank">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="p-2 hover:text-primary"
+                        variant="ghost"
+                        type="button"
+                      >
+                        <Image className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Ver banner</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Link>
+              )}
+            </div>
+          </FormItem>
         </CardContent>
         <CardFooter>
           {(!isSubmitting || isLoadingCities) && (

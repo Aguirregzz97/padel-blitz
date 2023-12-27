@@ -9,6 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
 import TanstackProvider from "@/Providers/TanstackProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,11 +36,13 @@ export default function RootLayout({
         >
           <TanstackProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <Toaster />
-              <Container>
-                <Header />
-                {children}
-              </Container>
+              <TooltipProvider>
+                <Toaster />
+                <Container>
+                  <Header />
+                  {children}
+                </Container>
+              </TooltipProvider>
             </ThemeProvider>
           </TanstackProvider>
         </body>

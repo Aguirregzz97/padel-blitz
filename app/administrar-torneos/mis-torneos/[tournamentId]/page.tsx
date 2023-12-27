@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import useTournament from "@/queries/tournament/useTournament";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { ArrowBigLeft } from "lucide-react";
+import { ArrowBigLeft, Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function MyAdminTournament({
@@ -15,9 +15,11 @@ export default function MyAdminTournament({
 }) {
   const router = useRouter();
 
-  const { data: tournament, isLoading: isLoadingTournament } = useTournament(
-    params.tournamentId,
-  );
+  const {
+    data: tournament,
+    isLoading: isLoadingTournament,
+    refetch,
+  } = useTournament(params.tournamentId);
 
   return (
     <Card className="min-h-[24rem] max-w-lg">
@@ -37,11 +39,17 @@ export default function MyAdminTournament({
                 >
                   <ArrowBigLeft className="h-5 w-5" />
                 </Button>
-                <span>{tournament?.name}</span>
+                <div className="mt-1 flex items-center">
+                  {tournament.name}
+                  <Trophy className="ml-2 h-5 w-5 text-primary" />
+                </div>
               </div>
             </CardTitle>
           </CardHeader>
-          <ViewEditTournamentForm tournament={tournament} />
+          <ViewEditTournamentForm
+            tournament={tournament}
+            refetchTournament={refetch}
+          />
         </>
       )}
     </Card>
