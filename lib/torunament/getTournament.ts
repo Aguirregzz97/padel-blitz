@@ -17,6 +17,9 @@ export default async function getTournament(tournamentId: number) {
             columns: { category_name: true },
           },
         },
+        orderBy: (category_types, { asc }) => [
+          asc(category_types.category_type_id),
+        ],
       },
     },
   });
