@@ -137,6 +137,7 @@ export default function ViewEditTournamentForm({
       title: "Operacion realizada con exito",
       description: <span>Se actualizo el torneo correctamente</span>,
     });
+    refetchTournament();
   }
 
   function onSuccessUpdateBannerUrl() {
@@ -157,6 +158,7 @@ export default function ViewEditTournamentForm({
 
   async function onSubmit(values: z.infer<typeof editTournamentFormSchema>) {
     await mutateAsync({ ...values, tournamentId: tournament.id });
+    form.reset(values);
   }
 
   return (
@@ -342,7 +344,7 @@ export default function ViewEditTournamentForm({
               <FormControl>
                 <UploadButton
                   appearance={{
-                    button: "bg-primary after:bg-muted",
+                    button: "bg-primary text-primary-foreground after:bg-muted",
                   }}
                   endpoint="imageUploader"
                   onClientUploadComplete={(res: { url: string }[]) => {

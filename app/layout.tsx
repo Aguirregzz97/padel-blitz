@@ -27,12 +27,12 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         suppressHydrationWarning
-        className={`${GeistSans.variable} ${GeistMono.variable} mb-16 h-full bg-background`}
+        className={`${GeistSans.variable} ${GeistMono.variable} mb-16 h-screen bg-background`}
         lang="en"
       >
         <body
           suppressHydrationWarning
-          className={`${inter.className} h-full bg-background`}
+          className={`${inter.className} mb-16 h-full bg-background`}
         >
           <TanstackProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
