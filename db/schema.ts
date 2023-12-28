@@ -28,6 +28,8 @@ export const userRelations = relations(users, ({ many, one }) => ({
     references: [category_types.id],
   }),
   tournaments_owned: many(tournaments),
+  team_player_1: many(teams, { relationName: "team_player1" }),
+  team_player_2: many(teams, { relationName: "team_player2" }),
 }));
 
 export const category_types = pgTable("category_types", {
@@ -96,30 +98,21 @@ export const tournamentRelations = relations(tournaments, ({ many, one }) => ({
   city: one(cities, { fields: [tournaments.city_id], references: [cities.id] }),
 }));
 
-export const category_tournaments = pgTable(
-  "category_tournaments",
-  {
-    category_type_id: integer("category_type_id")
-      .references(() => category_types.id, { onDelete: "cascade" })
-      .notNull(),
-    tournament_id: integer("tournament_id")
-      .references(() => tournaments.id, {
-        onDelete: "cascade",
-      })
-      .notNull(),
-  },
-  (table) => {
-    return {
-      pk: primaryKey({
-        columns: [table.category_type_id, table.tournament_id],
-      }),
-    };
-  },
-);
+export const category_tournaments = pgTable("category_tournaments", {
+  id: serial("id").primaryKey(),
+  category_type_id: integer("category_type_id")
+    .references(() => category_types.id, { onDelete: "cascade" })
+    .notNull(),
+  tournament_id: integer("tournament_id")
+    .references(() => tournaments.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+});
 
 export const categoryTournamentsRelations = relations(
   category_tournaments,
-  ({ one }) => ({
+  ({ one, many }) => ({
     category: one(category_types, {
       fields: [category_tournaments.category_type_id],
       references: [category_types.id],
@@ -128,6 +121,7 @@ export const categoryTournamentsRelations = relations(
       fields: [category_tournaments.tournament_id],
       references: [tournaments.id],
     }),
+    teams: many(teams),
   }),
 );
 
@@ -167,3 +161,44 @@ export const tournamentAdminRelations = relations(
     }),
   }),
 );
+
+export const groups = pgTable("groups", {
+  id: serial("id").primaryKey(),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
+
+export const groupRelations = relations(groups, ({ many }) => ({
+  teams: many(teams),
+}));
+
+export const teams = pgTable("teams", {
+  id: serial("id").primaryKey(),
+  user_id_1: varchar("user_id_1", { length: 256 }).references(() => users.id),
+  user_id_2: varchar("user_id_2", { length: 256 }).references(() => users.id),
+  category_tournament_id: integer("category_tournament_id").references(
+    () => category_tournaments.id,
+  ),
+  group_id: integer("group_id").references(() => groups.id),
+});
+
+export const teamsRelations = relations(teams, ({ one }) => ({
+  player_1: one(users, {
+    fields: [teams.user_id_1],
+    references: [users.id],
+    relationName: "team_player1",
+  }),
+  player_2: one(users, {
+    fields: [teams.user_id_2],
+    references: [users.id],
+    relationName: "team_player2",
+  }),
+  category_tournament: one(category_tournaments, {
+    fields: [teams.category_tournament_id],
+    references: [category_tournaments.id],
+  }),
+  group: one(groups, {
+    fields: [teams.group_id],
+    references: [groups.id],
+  }),
+}));

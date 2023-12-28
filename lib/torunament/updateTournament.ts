@@ -30,6 +30,7 @@ export default async function updateTournament(
       tournament_end_at: new Date(tournament.tournament_dates.to),
       registration_start_at: new Date(tournament.registration_dates.from),
       registration_end_at: new Date(tournament.registration_dates.to),
+      updated_at: new Date(),
     })
     .where(eq(tournaments.id, tournamentId))
     .returning();
