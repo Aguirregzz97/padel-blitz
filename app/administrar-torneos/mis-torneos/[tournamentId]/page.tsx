@@ -73,17 +73,6 @@ export default function MyAdminTournament({
                   <CardHeader>
                     <CardTitle className="text-md">
                       <div className="mt-1 flex items-center">
-                        <Button
-                          className="mr-2 p-1 hover:text-primary"
-                          variant="ghost"
-                          onClick={() =>
-                            router.push(
-                              `/administrar-torneos/mis-torneos/${tournament.id}`,
-                            )
-                          }
-                        >
-                          <ArrowBigLeft className="h-5 w-5" />
-                        </Button>
                         <p>Categorias</p>
                         <ListOrdered className="ml-3 h-6 w-6 text-primary" />
                       </div>

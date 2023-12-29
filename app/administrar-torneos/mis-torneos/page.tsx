@@ -37,7 +37,7 @@ export default function Torneos() {
               adminTournaments?.map((tournament) => {
                 return (
                   <Card key={tournament.id} className="relative max-w-[250px]">
-                    <CardHeader className="pl-4">
+                    <CardHeader className="mb-4 border-b-2 pb-3 pl-4">
                       <CardTitle>
                         <div className="text-md mt-1 flex items-center">
                           <Trophy className="mr-2 h-5 min-h-[1.25rem] w-5 min-w-[1.25rem] text-primary" />

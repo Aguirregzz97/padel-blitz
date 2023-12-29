@@ -1,4 +1,4 @@
-import updateBannerUrl from "@/lib/torunament/updateBannerUrl";
+import updateBannerUrl from "@/lib/tournament/updateBannerUrl";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 

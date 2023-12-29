@@ -1,4 +1,4 @@
-import getTournament from "@/lib/torunament/getTournament";
+import getTournament from "@/lib/tournament/getTournament";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, context: any) {

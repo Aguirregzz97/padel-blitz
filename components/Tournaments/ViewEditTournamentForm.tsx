@@ -33,7 +33,7 @@ import useCategoryTypes from "@/queries/category_type/useCategoryTypes";
 import { useEffect, useState } from "react";
 import { MultiSelect } from "../ui/multiselect";
 import { DevT } from "@/utils/reacthookform";
-import { getTournamentType } from "@/lib/torunament/getTournament";
+import { getTournamentType } from "@/lib/tournament/getTournament";
 import useUpdateTournament from "@/mutations/useUpdateTournament";
 import { UploadButton } from "@/utils/uploadthing";
 import useUpdateTournamentBannerUrl from "@/mutations/useUpdateTournamentBannerUrl";

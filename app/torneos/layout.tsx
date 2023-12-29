@@ -11,11 +11,13 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="m-8">
-      <nav className={cn("m-2 flex items-center space-x-4 lg:space-x-6")}>
+      <nav className={cn("m-2 mb-6 flex items-center space-x-4 lg:space-x-6")}>
         <Link
           href="/torneos/mis-torneos"
           className={`text-sm font-medium transition-colors hover:text-primary ${
-            !pathname.includes("/mis-torneos") ? "text-muted-foreground" : ""
+            !pathname.includes("/mis-torneos")
+              ? "text-muted-foreground"
+              : "text-primary"
           }`}
         >
           Mis torneos
@@ -25,7 +27,7 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
           className={`text-sm font-medium transition-colors hover:text-primary ${
             !pathname.includes("/explorar-torneos")
               ? "text-muted-foreground"
-              : ""
+              : "text-primary"
           }`}
         >
           Explorar Torneos

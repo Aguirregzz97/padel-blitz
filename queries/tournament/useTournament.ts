@@ -1,6 +1,6 @@
 "use client";
 
-import { getTournamentType } from "@/lib/torunament/getTournament";
+import { getTournamentType } from "@/lib/tournament/getTournament";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

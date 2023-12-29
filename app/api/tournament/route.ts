@@ -1,7 +1,7 @@
 import { createTournamentFormSchema } from "@/components/Tournaments/CreateTournamentForm";
 import { editTournamentFormSchema } from "@/components/Tournaments/ViewEditTournamentForm";
-import createTournament from "@/lib/torunament/createTournament";
-import updateTournament from "@/lib/torunament/updateTournament";
+import createTournament from "@/lib/tournament/createTournament";
+import updateTournament from "@/lib/tournament/updateTournament";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
