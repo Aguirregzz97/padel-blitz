@@ -8,17 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useMyTournaments from "@/queries/tournament/useMyTournaments";
+import useExploreTournaments from "@/queries/tournament/useExploreTournaments";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import format from "date-fns/format";
 import {
   Trophy,
   Image,
-  BarChart4,
   MapPin,
   Eye,
   Calendar,
   Swords,
+  LogIn,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -47,15 +47,15 @@ function getTournamentStatus(
   return "Registro no ha comenzado";
 }
 
-export default function MyTournaments() {
-  const { data: myTournaments, isLoading } = useMyTournaments();
+export default function EnroleInTournament() {
+  const { data: myTournaments, isLoading } = useExploreTournaments();
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-md">
           <div className="mt-1 flex items-center">
-            Mis Torneos
+            Torneos en registro
             <Trophy className="ml-2 h-5 w-5" />
           </div>
         </CardTitle>
@@ -82,19 +82,15 @@ export default function MyTournaments() {
                     <CardContent className="pb-4 pl-4">
                       <div className="flex flex-col gap-y-3">
                         <p className="flex items-center text-sm">
-                          <BarChart4 className="mr-2 h-5 w-5 text-primary" />
-                          <span className="">{tournament.category_name}</span>
-                        </p>
-                        <p className="flex items-center text-sm">
                           <Calendar className="mr-2 h-5 w-5 text-primary" />
                           <span>
                             {format(
-                              new Date(tournament?.tournament_start_at || ""),
+                              new Date(tournament?.registration_start_at || ""),
                               "LLL dd, y",
                             )}{" "}
                             {"->"}{" "}
                             {format(
-                              new Date(tournament?.tournament_end_at || ""),
+                              new Date(tournament?.registration_end_at || ""),
                               "LLL dd, y",
                             )}
                           </span>
@@ -128,7 +124,7 @@ export default function MyTournaments() {
                         </Link>
                       )}
                       <Button>
-                        Rol <Swords className="ml-1 h-5 w-5" />
+                        Enrolar <LogIn className="ml-1 h-5 w-5" />
                       </Button>
                     </CardFooter>
                   </Card>

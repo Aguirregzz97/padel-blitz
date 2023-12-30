@@ -23,14 +23,14 @@ export default function Torneos({ children }: { children: React.ReactNode }) {
           Mis torneos
         </Link>
         <Link
-          href="/torneos/explorar-torneos"
+          href="/torneos/enrolar"
           className={`text-sm font-medium transition-colors hover:text-primary ${
-            !pathname.includes("/explorar-torneos")
+            !pathname.includes("/enrolar")
               ? "text-muted-foreground"
               : "text-primary"
           }`}
         >
-          Explorar Torneos
+          Enrolar En Torneo
         </Link>
       </nav>
       {children}
