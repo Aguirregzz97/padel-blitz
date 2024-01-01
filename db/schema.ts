@@ -5,6 +5,7 @@ import {
   timestamp,
   serial,
   primaryKey,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -182,7 +183,7 @@ export const teams = pgTable("teams", {
   group_id: integer("group_id").references(() => groups.id),
 });
 
-export const teamsRelations = relations(teams, ({ one }) => ({
+export const teamsRelations = relations(teams, ({ one, many }) => ({
   player_1: one(users, {
     fields: [teams.user_id_1],
     references: [users.id],
@@ -200,5 +201,52 @@ export const teamsRelations = relations(teams, ({ one }) => ({
   group: one(groups, {
     fields: [teams.group_id],
     references: [groups.id],
+  }),
+  team_1_games: many(games, { relationName: "team_1" }),
+  team_2_games: many(games, { relationName: "team_2" }),
+}));
+
+export const playoffTypeEnum = pgEnum("playoff_type", [
+  "dieciseisavos",
+  "octavos",
+  "cuartos",
+  "semifinales",
+  "final",
+]);
+
+export const games = pgTable("games", {
+  id: serial("id").primaryKey(),
+  team_id_1: integer("team_id_1").references(() => teams.id),
+  team_id_2: integer("team_id_2").references(() => teams.id),
+  category_tournament_id: integer("category_tournament_id").references(
+    () => category_tournaments.id,
+  ),
+  playoff_type: playoffTypeEnum("playoff_type"),
+  team_1_score_1: integer("team_1_score_1"),
+  team_1_score_2: integer("team_1_score_2"),
+  team_1_score_3: integer("team_1_score_3"),
+  team_2_score_1: integer("team_2_score_1"),
+  team_2_score_2: integer("team_2_score_2"),
+  team_2_score_3: integer("team_2_score_3"),
+  court: varchar("court", { length: 256 }),
+  played_at: timestamp("played_at"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
+
+export const gamesRelations = relations(games, ({ one }) => ({
+  team_1: one(teams, {
+    fields: [games.team_id_1],
+    references: [teams.id],
+    relationName: "team_1",
+  }),
+  team_2: one(teams, {
+    fields: [games.team_id_2],
+    references: [teams.id],
+    relationName: "team_2",
+  }),
+  category_tournament: one(category_tournaments, {
+    fields: [games.category_tournament_id],
+    references: [category_tournaments.id],
   }),
 }));
