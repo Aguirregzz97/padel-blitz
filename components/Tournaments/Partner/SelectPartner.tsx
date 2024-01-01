@@ -77,7 +77,7 @@ export default function SelectPartner({ onValueSelected }: SelectPartnerProps) {
                     <AvatarImage src={partner.image_url || undefined} />
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
-                  {partner.first_name} {partner.last_name}
+                  {partner.first_name} {partner.last_name} {partner.phone}
                 </Button>
               </div>
             );
