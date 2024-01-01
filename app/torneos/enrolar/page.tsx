@@ -17,8 +17,8 @@ import {
   MapPin,
   Eye,
   Calendar,
-  Swords,
   LogIn,
+  BarChart4,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -82,7 +82,7 @@ export default function EnroleInTournament() {
                     <CardContent className="pb-4 pl-4">
                       <div className="flex flex-col gap-y-3">
                         <p className="flex items-center text-sm">
-                          <Calendar className="mr-2 h-5 w-5 text-primary" />
+                          <LogIn className="mr-2 h-5 w-5 text-primary" />
                           <span>
                             {format(
                               new Date(tournament?.registration_start_at || ""),
@@ -96,8 +96,32 @@ export default function EnroleInTournament() {
                           </span>
                         </p>
                         <p className="flex items-center text-sm">
+                          <Calendar className="mr-2 h-5 w-5 text-primary" />
+                          <span>
+                            {format(
+                              new Date(tournament?.tournament_start_at || ""),
+                              "LLL dd, y",
+                            )}{" "}
+                            {"->"}{" "}
+                            {format(
+                              new Date(tournament?.tournament_end_at || ""),
+                              "LLL dd, y",
+                            )}
+                          </span>
+                        </p>
+                        <p className="flex items-center text-sm">
                           <MapPin className="mr-2 h-5 w-5 text-primary" />
-                          <span>{tournament.city_name}</span>
+                          <span>{tournament.city?.name}</span>
+                        </p>
+                        <p className="flex items-center text-sm">
+                          <BarChart4 className="mr-2 h-5 w-5 text-primary" />
+                          <span>
+                            {tournament.categories.map((category) => {
+                              return (
+                                <span>{category.category.category_name}, </span>
+                              );
+                            })}
+                          </span>
                         </p>
                         <p className="flex items-center text-sm">
                           <Eye className="mr-2 h-5 min-h-[1.25rem] w-5 min-w-[1.25rem] text-primary" />
@@ -123,9 +147,11 @@ export default function EnroleInTournament() {
                           </Button>
                         </Link>
                       )}
-                      <Button>
-                        Enrolar <LogIn className="ml-1 h-5 w-5" />
-                      </Button>
+                      <Link href={`/torneos/${tournament.id}/enrolar`}>
+                        <Button>
+                          Enrolar <LogIn className="ml-1 h-5 w-5" />
+                        </Button>
+                      </Link>
                     </CardFooter>
                   </Card>
                 );
