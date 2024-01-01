@@ -66,7 +66,7 @@ export default function MyTournaments() {
         ) : (
           <div className="flex flex-wrap gap-4">
             {myTournaments?.length === 0 ? (
-              <p className="text-xs">No eres administrador de ningun torneo</p>
+              <p className="text-xs">No estas registrado en ningun torneo</p>
             ) : (
               myTournaments?.map((tournament) => {
                 return (

@@ -23,12 +23,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Skeleton } from "../ui/skeleton";
 import { useToast } from "../ui/use-toast";
-import useCreateTourment from "@/mutations/useCreateTournament";
 import { DevT } from "@/utils/reacthookform";
 import { useRouter } from "next/navigation";
-import useTournament from "@/queries/tournament/useTournament";
 import SelectPartner from "./Partner/SelectPartner";
 import { getTournamentType } from "@/lib/tournament/getTournament";
+import useDbUser from "@/queries/user/useDbUser";
+import useRegisterTeam from "@/mutations/teams/useRegisterTeam";
 
 export const enroleInTournamentFormSchema = z.object({
   category_tournament_id: z.string().min(1, { message: "categoria requerida" }),
@@ -43,6 +43,7 @@ export default function EnroleInTournamentForm({
   isLoadingTournament: boolean;
 }) {
   const router = useRouter();
+  const { data: currentUser, isLoading: isLoadingUser } = useDbUser();
 
   const form = useForm<z.infer<typeof enroleInTournamentFormSchema>>({
     resolver: zodResolver(enroleInTournamentFormSchema),
@@ -56,12 +57,12 @@ export default function EnroleInTournamentForm({
 
   const { isSubmitting } = form.formState;
 
-  const { mutateAsync } = useCreateTourment(onSuccess, onError);
+  const { mutateAsync } = useRegisterTeam(onSuccess, onError);
 
   function onSuccess() {
     toast({
       title: "Operacion realizada con exito",
-      description: <span>Enrolaste en el torneo correctamente</span>,
+      description: <span>Se registro el equipo correctamente</span>,
     });
     router.push("/torneos/mis-torneos");
   }
@@ -77,7 +78,13 @@ export default function EnroleInTournamentForm({
   async function onSubmit(
     values: z.infer<typeof enroleInTournamentFormSchema>,
   ) {
-    // await mutateAsync(values);
+    if (currentUser) {
+      await mutateAsync({
+        playerId1: currentUser.id,
+        playerId2: values.partner,
+        categoryTournamentId: values.category_tournament_id,
+      });
+    }
   }
 
   return (

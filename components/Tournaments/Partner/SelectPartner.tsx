@@ -71,7 +71,7 @@ export default function SelectPartner({ onValueSelected }: SelectPartnerProps) {
                     setShowUsers(false);
                   }}
                   variant="ghost"
-                  className="flex items-center gap-2"
+                  className="flex w-full justify-start gap-2 focus:bg-muted active:bg-muted"
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={partner.image_url || undefined} />

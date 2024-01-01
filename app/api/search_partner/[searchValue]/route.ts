@@ -1,9 +1,11 @@
 import getPartners from "@/lib/user/getPartners";
-import { NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request, context: any) {
+export async function GET(request: NextRequest, context: any) {
   const { params } = context;
   const { searchValue } = params;
-  const partners = await getPartners(searchValue);
+  const { userId } = getAuth(request);
+  const partners = await getPartners(searchValue, userId || "");
   return NextResponse.json(partners);
 }
