@@ -28,6 +28,7 @@ import { DevT } from "@/utils/reacthookform";
 import { useRouter } from "next/navigation";
 import useTournament from "@/queries/tournament/useTournament";
 import SelectPartner from "./Partner/SelectPartner";
+import { getTournamentType } from "@/lib/tournament/getTournament";
 
 export const enroleInTournamentFormSchema = z.object({
   category_tournament_id: z.string().min(1, { message: "categoria requerida" }),
@@ -35,9 +36,11 @@ export const enroleInTournamentFormSchema = z.object({
 });
 
 export default function EnroleInTournamentForm({
-  tournamentId,
+  tournament,
+  isLoadingTournament,
 }: {
-  tournamentId: string;
+  tournament: getTournamentType | undefined;
+  isLoadingTournament: boolean;
 }) {
   const router = useRouter();
 
@@ -52,11 +55,6 @@ export default function EnroleInTournamentForm({
   const { toast } = useToast();
 
   const { isSubmitting } = form.formState;
-
-  const {
-    data: tournamentCategories,
-    isLoading: isLoadingTournamentCategories,
-  } = useTournament(tournamentId);
 
   const { mutateAsync } = useCreateTourment(onSuccess, onError);
 
@@ -92,7 +90,7 @@ export default function EnroleInTournamentForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Categoria</FormLabel>
-                {isLoadingTournamentCategories ? (
+                {isLoadingTournament ? (
                   <Skeleton className="h-9 w-full" />
                 ) : (
                   <Select value={field.value} onValueChange={field.onChange}>
@@ -102,7 +100,7 @@ export default function EnroleInTournamentForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {tournamentCategories?.categories.map((category, idx) => {
+                      {tournament?.categories.map((category, idx) => {
                         return (
                           <SelectItem key={idx} value={category.id.toString()}>
                             {category.category.category_name}
@@ -136,7 +134,7 @@ export default function EnroleInTournamentForm({
           />
         </CardContent>
         <CardFooter>
-          {(!isSubmitting || isLoadingTournamentCategories) && (
+          {(!isSubmitting || isLoadingTournament) && (
             <Button
               disabled={!form.formState.isDirty}
               className="w-full"
